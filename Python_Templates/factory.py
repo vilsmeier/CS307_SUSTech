@@ -1,5 +1,6 @@
 from configparser import ConfigParser
 from pathlib import Path
+import psycopg2
 
 from service import *
 
@@ -8,7 +9,8 @@ class ServiceFactory:
     def __init__(self):
         config = ConfigParser()
         config.read(Path(__file__).parent / 'config.ini')
-        # TODO: initialize database connection / connection pool
+        self.connect_to_postgresql = psycopg2.connect(database = config.get('database','database'),user = config.get('database','username'),password = config.get('database','password'),host = config.get('database','host'),port = config.get('database','port'))
+        
 
     def create_course_service(self) -> CourseService:
         # TODO: return an instance of your implementation
